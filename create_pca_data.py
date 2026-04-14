@@ -1,9 +1,15 @@
 import pandas as pd
+import os
 
 def create_pca_dataset():
     # Read the data
     print("Reading clean_demand.csv...")
-    df = pd.read_csv('clean_demand.csv', sep=';', low_memory=False)
+    
+    # Get the directory where the script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    input_path = os.path.join(script_dir, 'clean_demand.csv')
+    
+    df = pd.read_csv(input_path, sep=';', low_memory=False)
     
     # Create the pivot table
     # Rows: Product_ID (SKUs)
@@ -24,7 +30,7 @@ def create_pca_dataset():
     pivot_df.columns = [f"{year}_{month:02d}" for year, month in pivot_df.columns]
     
     # Save the transformed dataset
-    output_filename = 'pca_demand.csv'
+    output_filename = os.path.join(script_dir, 'pca_demand.csv')
     pivot_df.to_csv(output_filename)
     
     print(f"Success! Created {output_filename} with shape {pivot_df.shape}")
