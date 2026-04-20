@@ -19,7 +19,7 @@ def main():
     Z_df = pd.read_csv(scores_path, index_col=0)
 
     # We cluster only on the first PCs (as in the notebook)
-    X = Z_df[['PC1', 'PC2', 'PC3', 'PC4']].values
+    X = Z_df[['PC1', 'PC2', 'PC3', 'PC4', 'PC5']].values
 
     print("Shape of clustering matrix:", X.shape)
 
@@ -124,7 +124,12 @@ def main():
     output_dir = os.path.join(script_dir, "outputs")
     os.makedirs(output_dir, exist_ok=True)
 
-    Z_df.to_csv(os.path.join(output_dir, "sku_pca_clusters.csv"))
+    
+    # Keep only PCs actually used for clustering
+    cols_to_keep = ['PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'Cluster']
+    Z_df_out = Z_df[cols_to_keep]
+
+    Z_df_out.to_csv(os.path.join(output_dir, "sku_pca_clusters.csv"))
 
     print("\n✅ Clustering analysis completed.")
     print("Clusters saved to: outputs/sku_pca_clusters.csv")
